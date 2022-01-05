@@ -1,24 +1,29 @@
-import logo from './logo.svg';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+import UiShell from './layout/UiShell';
+import InfoState from './context/info/InfoState';
+import StepState from './context/step/StepState';
+import Home from './pages/Home';
+import NotFound from './pages/NotFound';
+import Pedidos from './pages/Pedidos';
+
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <StepState>
+      <InfoState>
+        <BrowserRouter>
+          <UiShell>
+            <Routes>
+              <Route exact path="/" element={<Home />} />
+              <Route exact path="/pedidos" element={<Pedidos />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </UiShell>
+        </BrowserRouter>
+      </InfoState>
+    </StepState>
   );
 }
 
