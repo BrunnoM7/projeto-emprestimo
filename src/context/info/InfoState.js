@@ -25,6 +25,18 @@ const InfoState = props => {
 
   const [state, dispatch] = useReducer(InfoReducer, initialState);
 
+  const mockInfo = {
+    nome: 'Paul Palasiono',
+    cpf: '33399977766',
+    valor: '3000',
+    parcelas: '9',
+    motivo: 'Realizar um sonho',
+    rg: '449897769',
+    emissao: '04092017',
+    orgEmissor: 'SSP',
+    sexo: ['masculino']
+  }
+
   // Get all info
   const getInfos = async () => {
     setLoading();
@@ -41,6 +53,26 @@ const InfoState = props => {
   }
 
   // Add a new info
+  const addInfo = async info => {
+    const config = {
+      headers: {
+        'Content-Type' : 'application/json'
+      }
+    }
+
+    try {
+      const res = await axios.post(
+        'https://61d4e2998df81200178a8e73.mockapi.io/infos', 
+        info,
+        config
+      )
+
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+    
+  }
 
   // update a info
 
@@ -52,6 +84,9 @@ const InfoState = props => {
   }
 
   // clear the current info
+  const clearCurrent = () => {
+    dispatch({ type: CLEAR_CURRENT })
+  }
 
   // Set Loading
   const setLoading = () => dispatch({ type: SET_LOADING })
@@ -62,7 +97,9 @@ const InfoState = props => {
         current: state.current,
         loading: state.loading,
         getInfos,
-        setCurrent
+        addInfo,
+        setCurrent,
+        clearCurrent
       }}
     >
       {props.children}

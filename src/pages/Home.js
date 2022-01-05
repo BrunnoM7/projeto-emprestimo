@@ -5,6 +5,7 @@ import StepContext from '../context/step/StepContext';
 import StatusBar from '../components/StatusBar';
 import Form from '../components/Form';
 import Review from '../components/Review';
+import Final from '../components/Final';
 
 const Home = () => {
   const stepContext = useContext(StepContext);
@@ -23,6 +24,7 @@ const Home = () => {
       <StatusBar />
       {(step === 1 || step ===2) && <Form />}
       {step === 3 && <Review />}
+      {step === 4 && <Final />}
     </Fragment>
   )
 }

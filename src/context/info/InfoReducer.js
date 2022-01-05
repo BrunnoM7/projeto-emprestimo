@@ -17,8 +17,11 @@ export default (state, action) => {
         infos: action.payload,
         loading: false
       }
-    // case ADD_INFO:
-    //   return
+    case ADD_INFO:
+      return {
+        ...state,
+        loading: false
+      }
     // case UPDATE_INFO:
     //   return
     // case DELETE_INFO:
@@ -28,8 +31,11 @@ export default (state, action) => {
         ...state,
         current: action.payload
       }
-    // case CLEAR_CURRENT:
-    //   return
+    case CLEAR_CURRENT:
+      return {
+        ...state,
+        current: null
+      }
     case SET_LOADING:
       return {
         ...state,

@@ -36,22 +36,24 @@ const StatusBar = () => {
         </div>
       }
       
-      <div className='bg-light'>
-        <div className='container container-flex'>
-          <div style={{ color: step === 1 ? "blue" : "black" }}>
-            <p><span>1</span> SIMULE</p>
-          </div>
-          <div style={{ color: step === 2 ? "blue" : "black" }}>
-            <p><span>2</span> PREENCHA O CADASTRO</p>
-          </div>
-          <div style={{ color: step === 3 ? "blue" : "black" }}>
-            <p><span>3</span> REVISE SEU PEDIDO</p>
-          </div>
-          <div style={{ color: step === 4 ? "blue" : "black" }}>
-            <p><span>4</span> FINALIZE O PEDIDO</p>
+      {(step > 1 && step <5) &&
+        <div className='bg-light'>
+          <div className='container container-flex'>
+            <div style={{ color: step === 1 ? "blue" : "black" }}>
+              <p><span>1</span> SIMULE</p>
+            </div>
+            <div style={{ color: step === 2 ? "blue" : "black" }}>
+              <p><span>2</span> PREENCHA O CADASTRO</p>
+            </div>
+            <div style={{ color: step === 3 ? "blue" : "black" }}>
+              <p><span>3</span> REVISE SEU PEDIDO</p>
+            </div>
+            <div style={{ color: step === 4 ? "blue" : "black" }}>
+              <p><span>4</span> FINALIZE O PEDIDO</p>
+            </div>
           </div>
         </div>
-      </div>
+      }
     </div>
   )
 }
