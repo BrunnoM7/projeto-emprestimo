@@ -28,7 +28,8 @@ const Form = props => {
     emissao: '',
     orgEmissor: '',
     sexo: []
-  })
+  });
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const path = id ? "../orgsSource.json" : "orgsSource.json";
@@ -71,18 +72,62 @@ const Form = props => {
     }
   }
 
+  const validForm = () => {
+    if(step === 1 || id) {
+      if (valor === '') {
+        console.log(info.valor);
+        return false
+      }
+      if (parcelas === '') {
+        return false
+      }
+      if (motivo === '') {
+        return false
+      }
+      
+    } 
+    if(step === 2 || id) {
+      if (nome === '') {
+        return false
+      }
+      if (cpf === '') {
+        return false
+      }
+    }
+    if(step === 3 || id) {
+      if (rg === '') {
+        return false
+      }
+      if (emissao === '') {
+        return false
+      }
+      if (orgEmissor === '') {
+        return false;
+      }
+      if (sex.length < 1) {
+        return false;
+      }
+    }
+    return true
+  }
+
   const nextForm = () => {
+    if(!validForm()) return;
+
     setCurrent(info);
     nextStep();
+    
   }
 
   const onChange = e => setInfo({ ...info, [e.target.name]: e.target.value});
 
   const onSubmit = e => {
     e.preventDefault();
-
+    if(!validForm()) return;
+    
     setInfo({ ...info, sexo: sex });
-    setCurrent(info);
+    setCurrent({ ...info, sexo: sex });
+
     if(!id) {
       nextStep();
       navigate('/review');
