@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 import StepContext from '../../context/step/StepContext';
@@ -8,7 +8,12 @@ import Button from '../layout/Button';
 const Home = () => {
   let navigate = useNavigate();
   const stepContext = useContext(StepContext);
-  const { nextStep } = stepContext;
+  const { nextStep, setStep } = stepContext;
+
+  useEffect(() => {
+    setStep(0)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const onClick = () => {
     nextStep();
@@ -17,8 +22,8 @@ const Home = () => {
 
   return (
     <div className='container container-flex initial'>
-      Sua jornada para realizar seus sonhos se inicia agora aqui.
-      <Button className={'btn btn-primary'} onClick={onClick} value="Comece aqui" />
+      <h2>Sua jornada para realizar seus sonhos se inicia aqui e agora</h2>
+      <Button className={'btn btn-primary'} onClick={onClick} value="COMECE AQUI" />
     </div>
   )
 }
