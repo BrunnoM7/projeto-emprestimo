@@ -1,10 +1,12 @@
 import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 
+import StatusBar from './StatusBar';
+
 const UiShell = props => {
   return (
     <Fragment>
-      <nav className='navbar bg-dark'>
+      <nav className='navbar bg-darker'>
         <div>
           
         </div>
@@ -13,8 +15,11 @@ const UiShell = props => {
             <li>
               <Link to={'/'}>COMO FUNCIONA</Link>
             </li>
+            <span className='navbar-spacing'>o</span>
             <li>
-              <Link to={'/'}>PRIVACIDADE</Link></li>
+              <Link to={'/'}>PRIVACIDADE</Link>
+            </li>
+            <span className='navbar-spacing'>o</span>
             <li>
               <Link to={'/'}>AJUDA</Link>
             </li>
@@ -22,6 +27,7 @@ const UiShell = props => {
         </div>
       </nav>
       <main>
+        <StatusBar />
         {props.children}
       </main>
     </Fragment>

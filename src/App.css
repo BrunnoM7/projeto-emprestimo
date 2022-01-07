@@ -2,8 +2,9 @@
 
 /* Global Styles */
 :root {
-  --primary-color: #003699;
-  --dark-color: #333333;
+  --primary-color: #417a85;
+  --darker-color: #101010;
+  --dark-color: #434343;
   --light-color: #f4f4f4;
   --danger-color: #dc3545;
   --success-color: #28a745;
@@ -57,7 +58,12 @@ img {
   justify-content: space-between;
 }
 
-
+.container-flex.initial {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
 
 /* Text Styles*/
 .x-large {
@@ -86,7 +92,7 @@ img {
 }
 
 .text-dark {
-  color: var(--dark-color);
+  color: var(--darker-color);
 }
 
 .text-center {
@@ -258,6 +264,14 @@ img {
   color: #333;
 }
 
+.btn-darker,
+.bg-darker,
+.badge-darker,
+.alert-darker {
+  background: var(--darker-color);
+  color: #fff;
+}
+
 .btn-dark,
 .bg-dark,
 .badge-dark,
@@ -369,7 +383,7 @@ table th {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.7rem 2rem;
+  padding: 2rem 2rem;
   z-index: 1;
   width: 100%;
   opacity: 0.9;
@@ -380,6 +394,7 @@ table th {
 }
 
 .navbar a {
+  font-size: 1rem;
   color: #fff;
   padding: 0.45rem;
   margin: 0 0.25rem;
@@ -389,8 +404,8 @@ table th {
   color: var(--light-color);
 }
 
-.navbar .welcome span {
-  margin-right: 0.6rem;
+.navbar .navbar-spacing {
+  color: var(--primary-color);
 }
 
 /* Animation (Add After) */

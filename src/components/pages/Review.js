@@ -1,8 +1,10 @@
 import React, { useContext } from 'react'
-import InfoContext from '../context/info/InfoContext';
-import StepContext from '../context/step/StepContext';
+import { useNavigate } from 'react-router-dom';
+import InfoContext from '../../context/info/InfoContext';
+import StepContext from '../../context/step/StepContext';
 
 const Review = () => {
+  let navigate = useNavigate();
   const infoContext = useContext(InfoContext);
   const stepContext = useContext(StepContext);
 
@@ -21,8 +23,14 @@ const Review = () => {
     sexo
   } = current;
 
-  const onConfirm = () => nextStep();
-  const onCorrect = () => setStep(1);
+  const onConfirm = () => {
+    nextStep();
+    navigate('/final');
+  };
+  const onCorrect = () => {
+    setStep(1);
+    navigate('/form');
+  };
 
   return (
     <div className='container'>

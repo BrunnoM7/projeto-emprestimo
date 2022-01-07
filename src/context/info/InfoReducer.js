@@ -20,12 +20,23 @@ export default (state, action) => {
     case ADD_INFO:
       return {
         ...state,
+        infos: [...state.infos, action.payload],
         loading: false
       }
-    // case UPDATE_INFO:
-    //   return
-    // case DELETE_INFO:
-    //   return
+    case UPDATE_INFO:
+      return {
+        ...state,
+        infos: state.infos.map(
+          info => info.id === action.payload.id ? action.payload : info
+        ),
+        loading: false
+      }
+    case DELETE_INFO:
+      return {
+        ...state,
+        infos: state.infos.filter(info => info.id !== action.payload),
+        loading: false
+      }
     case SET_CURRENT:
       return {
         ...state,

@@ -1,14 +1,15 @@
 import React, { useContext } from 'react'
-import InfoContext from '../context/info/InfoContext';
-import StepContext from '../context/step/StepContext';
-import { CLEAR_CURRENT } from '../context/types';
+import { useNavigate } from 'react-router-dom';
+import InfoContext from '../../context/info/InfoContext';
+import StepContext from '../../context/step/StepContext';
 
 const Final = () => {
+  let navigate = useNavigate();
   const infoContext = useContext(InfoContext);
   const stepContext = useContext(StepContext);
 
   const { current, addInfo, clearCurrent } = infoContext;
-  const { nextStep, setStep } = stepContext;
+  const { setStep } = stepContext;
 
   const { 
     nome,
@@ -25,9 +26,13 @@ const Final = () => {
   const onConfirm = () => {
     addInfo(current);
     clearCurrent();
-    nextStep();
+    setStep(0);
+    navigate('/');
   };
-  const onCorrect = () => setStep(1);
+  const onCorrect = () => {
+    setStep(1);
+    navigate('/form');
+  };
 
   return (
     <div className='container'>
