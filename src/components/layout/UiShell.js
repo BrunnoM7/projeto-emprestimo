@@ -15,11 +15,11 @@ const UiShell = props => {
             <li>
               <Link to={'/'}>COMO FUNCIONA</Link>
             </li>
-            <span className='navbar-spacing'>o</span>
+            <span className='navbar-spacing'></span>
             <li>
               <Link to={'/'}>PRIVACIDADE</Link>
             </li>
-            <span className='navbar-spacing'>o</span>
+            <span className='navbar-spacing'></span>
             <li>
               <Link to={'/'}>AJUDA</Link>
             </li>

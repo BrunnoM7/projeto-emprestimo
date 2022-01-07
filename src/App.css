@@ -408,6 +408,87 @@ table th {
   color: var(--primary-color);
 }
 
+.navbar .navbar-spacing::after {
+  content: '';
+  display: block;
+  position: relative;
+  width: 1px;
+  height: 1px;
+  border: 3px solid var(--primary-color);
+  border-radius: 50px;
+  color: var(--primary-color);
+  transform: translateY(8px);
+}
+
+/* status bar */
+.status-bar {
+  padding-top: 1rem;
+  padding-bottom: 1.5rem;
+}
+
+.status-bar .label {
+  font-size: 0.7rem;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  line-height: 0.5;
+}
+
+.color-primary {
+  color: var(--primary-color);
+}
+
+.status-bar .info {
+  font-size: 1.5rem;
+}
+
+.status-bar .status-name {
+  min-width: 30%;
+  flex: 1;
+}
+
+.status-bar .status-money {
+  max-width: 49%;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.status-step {
+  justify-content: space-evenly;
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.status-step .number {
+  color: var(--light-color);
+  margin-right: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.status-step .number::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  z-index: -1;
+  width: 25px;
+  height: 25px;
+  background-color: var(--dark-color);
+  border-color: var(--dark-color);
+  border-radius: 50px;
+  color: var(--light-color);
+  top: -5px;
+  left: -8px;
+}
+
+.status-step .selected .number {}
+
+.status-step .selected .number::after {}
+
+.status-step .visited .number {}
+
+.status-step .visited .number::after {}
+
 /* Animation (Add After) */
 .item-enter {
   opacity: 0;
