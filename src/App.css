@@ -57,13 +57,18 @@ img {
 .container-flex {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
-.container-flex.initial {
+.container-flex.center {
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 80vh;
+}
+
+.container-flex.center.review {
+  height: 50vh;
 }
 
 /* Text Styles*/
@@ -84,8 +89,8 @@ img {
   margin-bottom: 1rem;
 }
 
-.text-center {
-  text-align: center;
+.text-bold {
+  font-weight: 700;
 }
 
 .text-primary {
@@ -215,6 +220,13 @@ img {
   outline: none;
 }
 
+.btn:disabled {
+  background: var(--disabled-color);
+  color: #333;
+  cursor: initial;
+  transition: none;
+}
+
 .btn-link {
   background: none;
   padding: 0;
@@ -311,6 +323,9 @@ img {
   opacity: 0.8;
 }
 
+.btn:disabled:hover {
+  opacity: 1;
+}
 .bg-light,
 .badge-light {
   border: #ccc solid 1px;
@@ -321,14 +336,46 @@ img {
 }
 
 /* Forms */
-input {
-  margin: 1.2rem 0;
+
+.container.form-default {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-sex {
+  align-items: center;
+  justify-content: center;
+  min-width: 80%;
+  margin-bottom: 1.2rem;
+}
+
+.form-sex .form-text {
+  margin-right: 0.5rem;
+}
+
+.divisor {
+  display: block;
+  padding: 3px;
+  font-weight: 700;
+}
+
+input[type='checkbox'] {
+  display: none;
+}
+
+
+input,
+select {
+  margin-bottom: 1.2rem;
 }
 
 .form-text {
+  font-size: 0.9rem;
+  font-weight: 700;
   display: block;
-  margin-top: 0.3rem;
-  color: #888;
+  color: #000;
 }
 
 input[type='text'],
@@ -336,32 +383,57 @@ input[type='email'],
 input[type='password'],
 input[type='date'],
 select,
-textarea {
+textarea,
+.input-checkbox {
+  background-color: #fff;
+  color: #000;
   display: block;
   width: 100%;
-  padding: 0.4rem;
+  padding: 0.7rem 0.3rem;
   font-size: 1.2rem;
-  border: 1px solid #ccc;
+  font-weight: 700;
+  border: 3px solid #000;
+  margin-right: 0.5rem;
 }
 
-input[type='submit'],
-button {
-  font: inherit;
+.input-checkbox {
+  max-width: 30%;
+  margin-right: 0;
+  padding: 0.428rem 0.3rem;
+}
+
+input[type='text']:focus,
+input[type='email']:focus,
+input[type='password']:focus,
+input[type='date']:focus,
+select:focus,
+textarea:focus {
+  border: 3px solid var(--primary-color);
+  outline: none;
+}
+
+input[type='text'].error,
+input[type='email'].error,
+input[type='password'].error,
+input[type='date'].error,
+select.error,
+textarea.error,
+.error .input-checkbox{
+  border: 3px solid var(--danger-color);
+}
+
+.input-checkbox.checked {
+  color: var(--primary-color);
+  background-color: var(--dark-color);
 }
 
 .form-group {
   margin: 1.2rem 0;
 }
 
-.form-group input {
-  margin: 0.2rem 0;
-}
-
 .form-container {
   max-width: 500px;
-  margin: 2rem auto;
   overflow: hidden;
-  padding: 0 2rem;
 }
 
 .form-container h1,
@@ -423,6 +495,11 @@ table th {
 }
 
 /* status bar */
+.status-bar,
+.status-step {
+  font-weight: 700;
+}
+
 .status-bar {
   padding-top: 1rem;
   padding-bottom: 1.5rem;
@@ -446,14 +523,29 @@ table th {
 }
 
 .status-bar .status-name {
-  min-width: 30%;
   flex: 1;
 }
 
 .status-bar .status-money {
-  max-width: 49%;
+  flex: 2;
+  justify-content: space-between;
+}
+
+.status-bar .status-docs {
+  max-width: 100%;
   flex: 1;
   justify-content: space-between;
+
+}
+
+.status-bar .status-sex {
+  max-width: 49%;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.status-bar.org {
+  justify-content: start;
 }
 
 .status-step {
@@ -533,8 +625,59 @@ table th {
 
 /* Mobile Styles */
 @media (max-width: 700px) {
+
+  .form-sex {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .input-checkbox {
+    max-width: 100%;
+  }
+
   .hide-sm {
     display: none;
+  }
+
+  .container-flex {
+    flex-wrap: wrap;
+  }
+
+  .container-flex.status-bar,
+  .container-flex.status-money,
+  div.container-flex.status-bar .status-docs,
+  .container-flex.status-sex {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .docs .container-flex.status-sex {
+    padding-top: 0;
+  }
+  div.container-flex.status-bar.docs  {
+    flex-direction: column-reverse;
+  }
+  .status-bar.org {
+    padding-bottom: 1rem;
+  }
+  .container-flex.status-bar div,
+  .container-flex.status-money div {
+    padding-top: 1rem;
+  }
+
+  .container-flex.center.review {
+    height: fit-content;
+  }
+
+  .container-flex.center.review div {
+    text-align: center;
+  }
+
+  .form-container {
+    min-width: 100%;
   }
 
   .grid-2,

@@ -11,7 +11,8 @@ import {
   DELETE_INFO,
   SET_CURRENT,
   CLEAR_CURRENT,
-  SET_LOADING
+  SET_LOADING,
+  GET_ORGS
 } from '../types';
 
 
@@ -20,7 +21,8 @@ const InfoState = props => {
   const initialState = {
     infos: [],
     current: null,
-    loading: false
+    loading: false,
+    orgs: []
   }
 
   const [state, dispatch] = useReducer(InfoReducer, initialState);
@@ -112,17 +114,26 @@ const InfoState = props => {
   // Set Loading
   const setLoading = () => dispatch({ type: SET_LOADING })
 
+  // Get Orgs
+  const getOrgs = async () => {
+    await fetch("orgsSource.json")
+      .then(res => res.json())
+      .then(data => dispatch({ type: GET_ORGS, payload: data.orgao_emissor }));
+  }
+
   return <InfoContext.Provider
       value={{
         infos: state.infos,
         current: state.current,
         loading: state.loading,
+        orgs: state.orgs,
         getInfos,
         addInfo,
         updateInfo,
         deleteInfo,
         setCurrent,
-        clearCurrent
+        clearCurrent,
+        getOrgs
       }}
     >
       {props.children}

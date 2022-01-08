@@ -14,10 +14,10 @@ const Form = props => {
   const infoContext = useContext(InfoContext);
   const stepContext = useContext(StepContext);
 
-  const { current, setCurrent, clearCurrent, updateInfo } = infoContext;
+  const { current, setCurrent, clearCurrent, updateInfo, orgs } = infoContext;
   const { step, nextStep, setStep } = stepContext;
 
-  const [orgs, setOrgs] = useState([]);
+  const [orgList, setOrgList] = useState([]);
   const [sex, setSex] = useState([]);
   const [info, setInfo] = useState({
     nome: '',
@@ -32,11 +32,8 @@ const Form = props => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    const path = id ? "../orgsSource.json" : "orgsSource.json";
-    fetch(path)
-      .then(res => res.json())
-      .then(data => setOrgs(data.orgao_emissor));
-
+    setOrgList(orgs);
+    
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -44,7 +41,6 @@ const Form = props => {
     if (current !== null) {
       setSex(current.sexo);
       setInfo({ ...current});
-      console.log('Sex aqui')
     } else {
       setInfo({
         nome: '',
@@ -60,10 +56,38 @@ const Form = props => {
     }
 
   }, [current])
+  
+  useEffect(() => {
+    handleError();
+  }, [info, sex])
 
   const { nome, cpf, valor, parcelas, motivo, rg, emissao, orgEmissor } = info;
 
+  const masks = (name,value) => {
+    let masked = value.replace(/\D/g, "");
+
+    if(name === 'cpf') {
+      return masked.replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d{1,2})/, '$1-$2')
+      .replace(/(-\d{2})\d+?$/, '$1');
+    }
+    if(name === 'rg') {
+      return masked.replace(/(\d{2})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d{1,2})/, '$1-$2')
+      .replace(/(-\d{1})\d+?$/, '$1');
+    }
+    if(name === 'emissao') {
+      return masked.replace(/(\d{2})(\d)/, '$1/$2')
+      .replace(/(\d{2})(\d)/, '$1/$2')
+      .replace(/(\/\d{4})\d+?$/, '$1');
+    }
+    return value;
+  }
+
   const handleSexInfo = e => {
+    handleError();
     if(e.target.checked){
       setSex([...sex, e.target.value]);
     } else {
@@ -72,58 +96,81 @@ const Form = props => {
     }
   }
 
+  const handleError = () => {
+    if(error) {
+      validForm();
+    }
+  }
+
   const validForm = () => {
     if(step === 1 || id) {
-      if (valor === '') {
-        console.log(info.valor);
-        return false
+      if(valor === '') {
+        setError(true);
+        return false;
       }
-      if (parcelas === '') {
-        return false
+      if(parcelas === '') {
+        setError(true);
+        return false;
       }
       if (motivo === '') {
+        setError(true);
         return false
       }
-      
     } 
     if(step === 2 || id) {
       if (nome === '') {
+        setError(true);
         return false
       }
-      if (cpf === '') {
+      if (cpf.length !== 14 ) {
+        setError(true);
         return false
       }
     }
     if(step === 3 || id) {
-      if (rg === '') {
+      if (rg.length !== 12) {
+        setError(true);
         return false
       }
-      if (emissao === '') {
-        return false
+      if (emissao.length < 10) {
+        setError(true);
+        return false;
       }
       if (orgEmissor === '') {
+        setError(true);
         return false;
       }
       if (sex.length < 1) {
+        setError(true);
         return false;
       }
     }
+    setError(false);
     return true
   }
 
   const nextForm = () => {
-    if(!validForm()) return;
+    if(!validForm()) {
+      handleError();
+      return;
+    }
 
     setCurrent(info);
     nextStep();
     
   }
 
-  const onChange = e => setInfo({ ...info, [e.target.name]: e.target.value});
+  const onChange = e => {
+    setInfo({ ...info, [e.target.name]: masks(e.target.name,e.target.value)});    
+    handleError();
+  };
 
   const onSubmit = e => {
     e.preventDefault();
-    if(!validForm()) return;
+    if(!validForm()) {
+      handleError();
+      return;
+    }
     
     setInfo({ ...info, sexo: sex });
     setCurrent({ ...info, sexo: sex });
@@ -134,21 +181,20 @@ const Form = props => {
     } else {
       setStep(0);
       updateInfo(info);
-      clearCurrent();
       navigate('/pedidos');
     }
   }
 
   return (
     <Fragment>
-      <form className='container' onSubmit={onSubmit}>
+      <form className='container form-default py-1' onSubmit={onSubmit}>
         { (step === 1 || id) && 
           <Fragment>
             { !id ? 
-              <Fragment>
+              <div className='container'>
                 <h2>SIMULE</h2>
                 <p>Fala pra gente o que você precisa e a gente te ajuda.</p>
-              </Fragment>
+              </div>
               :
               <Fragment>
                 <h2>Edite</h2>
@@ -156,38 +202,65 @@ const Form = props => {
               </Fragment>
             }
             
-
-            <label>
-              Preciso de
-              <input 
-                type="text" 
-                name="valor" 
-                onChange={onChange}
-                value={valor}
-              />
-            </label>
+            <div className='container container-flex'>
+              <div className='form-container'>
+                <label 
+                  className='form-text'
+                  htmlFor='valor'
+                >
+                  PRECISO DE
+                </label>
+                <input 
+                  type="text" 
+                  name="valor" 
+                  id='valor'
+                  onChange={onChange}
+                  value={valor}
+                  className={`${error && valor === '' ? 'error' : ''}`}
+                />
+              </div>
+              <span className='divisor hide-sm'>-</span>
+              <div className='form-container'>
+                <label 
+                  className='form-text'
+                  htmlFor='parcelas'
+                >
+                  QUERO PAGAR EM
+                </label>
+                <input 
+                  type="text" 
+                  name="parcelas" 
+                  id='parcelas'
+                  onChange={onChange}
+                  value={parcelas}
+                  className={`${error && parcelas === '' ? 'error' : ''}`}
+                />
+              </div>
+            </div>
       
-            <label>
-              Quero pagar em
-              <input 
-                type="text" 
-                name="parcelas" 
-                onChange={onChange}
-                value={parcelas}
-              />
-            </label>
-      
-            <label>
-              Para
+            <div className='container'>
+              <label
+                className='form-text'
+                htmlFor='motivo'
+              >
+                PARA
+              </label>
               <input 
                 type="text" 
                 name="motivo" 
                 onChange={onChange}
                 value={motivo}
+                className={`${error && motivo === '' ? 'error' : ''}`}
               />
-            </label>
+            </div>
             { !id &&
-              <Button className={'btn btn-primary'} type="button" value="Continuar" onClick={nextForm} />
+              <Button 
+                className={'btn btn-primary'} 
+                type="button" 
+                value="CONTINUAR"
+                onClick={nextForm} 
+                disabled={error}
+              />
             }
           </Fragment> 
         }
@@ -196,27 +269,47 @@ const Form = props => {
             { !id &&
               <h2>Agora precisamos de algumas informações suas, mas é coisa pouca e vai ser rapidinho</h2>
             }
-            <label>
-              Nome
-              <input 
-                type="text" 
-                name="nome" 
-                onChange={onChange}
-                value={nome}
-              />
-            </label>
-      
-            <label>
-              CPF
-              <input 
-                type="text" 
-                name="cpf" 
-                onChange={onChange}
-                value={cpf}
-              />
-            </label>
+            <div className='container container-flex form-sex'>
+              <div>
+                <label
+                  className='form-text'
+                  htmlFor='nome'
+                >
+                  Nome
+                </label>
+                <input 
+                  type="text" 
+                  name="nome" 
+                  onChange={onChange}
+                  value={nome}
+                  className={`${error && nome === '' ? 'error' : ''}`}
+                />
+              </div>
+              <span className='divisor hide-sm'>-</span>
+              <div>
+                <label
+                  className='form-text'
+                  htmlFor='nome'
+                >
+                  CPF
+                </label>
+                <input 
+                  type="text" 
+                  name="cpf" 
+                  onChange={onChange}
+                  value={cpf}
+                  className={`${error && cpf === '' ? 'error' : ''}`}
+                />
+              </div>
+            </div>
             { !id &&
-              <Button className={'btn btn-primary'} type="button" value="Continuar" onClick={nextForm} />
+              <Button 
+                className={'btn btn-primary'} 
+                type="button" 
+                value="Continuar" 
+                onClick={nextForm} 
+                disabled={error}
+              />
             }
           </Fragment> 
         }
@@ -225,37 +318,67 @@ const Form = props => {
             { !id &&
               <h2>Está quase acabando, só queremos saber mais umas coisinhas</h2>
             }
-            <div>
-              <label>
-                NÚMERO DO RG
+            <div
+              className='container container-flex form-sex'
+            >
+              <div>
+                <label 
+                  className='form-text'
+                  htmlFor='rg'
+                >
+                  NÚMERO DO RG
+                </label>
                 <input 
                   type="text" 
                   name="rg" 
                   onChange={onChange}
                   value={rg}
+                  className={`${error && rg === '' ? 'error' : ''}`}
                 />
-              </label>
-      
-              <label>
-                DATA DE EMISSÃO
+              </div>
+              <span className='divisor hide-sm'>-</span>
+              <div>
+                <label 
+                  className='form-text'
+                  htmlFor='emissao'
+                >
+                  DATA DE EMISSÃO
+                </label>
                 <input 
                   type="text" 
                   name="emissao" 
+                  id='emissao'
                   onChange={onChange}
                   value={emissao}
+                  className={`${error && emissao === '' ? 'error' : ''}`}
                 />
-              </label>
-            
-              <Select
-                name="orgEmissor" 
-                onChange={onChange}
-                orgs={orgs}
-                orgEmissor={orgEmissor}
-              />
+              </div>
+              <span className='divisor hide-sm'>-</span>
+              <div>
+                <label className='form-text'>ORGÃO EXPEDITOR</label>
+                <Select
+                  name="orgEmissor" 
+                  onChange={onChange}
+                  orgs={orgList}
+                  orgEmissor={orgEmissor}
+                  className={`${error && orgEmissor === '' ? 'error' : ''}`}
+                />
+              </div>
             </div>
-            <div>
-              <label>
-                Masculino
+            <div 
+              className={`
+                container container-flex form-sex
+                ${error && sex.length < 1 ? 'error' : ''}
+              `}>
+              <label className='form-text'>SEXO</label>
+              <label 
+                className={
+                  `input-checkbox text-center
+                  ${sex.includes("masculino") ? 'checked' : ''}
+                  `
+                }
+              >
+                MASCULINO
                 <input 
                   type="checkbox" 
                   name="sexo" 
@@ -264,18 +387,31 @@ const Form = props => {
                   checked={sex.includes("masculino")}
                 />
               </label>
-              <label>
-                Feminino
+              <span className="divisor"><i className='hide-sm'>-</i></span>
+              <label 
+                className={
+                  `input-checkbox text-center
+                  ${sex.includes("feminino") ? 'checked' : ''}
+                  `
+                }
+              >
+                FEMININO
                 <input 
                   type="checkbox" 
                   name="sexo" 
                   value="feminino" 
                   onChange={handleSexInfo} 
                   checked={sex.includes("feminino")}
+                  className={`${error && sex === [] ? 'error' : ''}`}
                 />
               </label>
             </div>
-            <Button className={'btn btn-primary'} type="submit" value={ id ? "Finalizar" : "Continuar"} />
+            <Button 
+              className={'btn btn-primary'} 
+              type="submit" 
+              value={ id ? "FINALIZAR" : "CONTINUAR"} 
+              disabled={error}
+            />
           </Fragment>
         }
       </form>

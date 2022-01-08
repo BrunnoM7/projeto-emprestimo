@@ -4,6 +4,7 @@ export const UPDATE_INFO = 'UPDATE_INFO';
 export const DELETE_INFO = 'DELETE_INFO';
 export const SET_CURRENT = 'SET_CURRENT';
 export const CLEAR_CURRENT = 'CLEAR_CURRENT';
+export const GET_ORGS = 'GET_ORGS';
 export const SET_LOADING = 'SET_LOADING';
 export const SET_STEP = 'SET_STEP';
 export const NEXT_STEP = 'NEXT_STEP';

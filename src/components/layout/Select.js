@@ -1,10 +1,11 @@
 import React from 'react'
 
 const Select = props => {
-  const { onChange, orgs, orgEmissor, name } = props;
+  const { onChange, orgs, orgEmissor, name, className } = props;
 
   return (
     <select 
+      className={className}
       name={name} 
       onChange={onChange}
       value={ orgEmissor }
@@ -15,7 +16,7 @@ const Select = props => {
             key={org.value} 
             value={org.value}
           >
-            {org.label}
+            {org.label.toUpperCase()}
           </option>
           )
         )

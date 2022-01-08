@@ -5,7 +5,8 @@ import {
   DELETE_INFO,
   SET_CURRENT,
   CLEAR_CURRENT,
-  SET_LOADING
+  SET_LOADING,
+  GET_ORGS
 } from '../types';
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -51,6 +52,12 @@ export default (state, action) => {
       return {
         ...state,
         loading: true
+      }
+    case GET_ORGS:
+      return {
+        ...state,
+        orgs: action.payload,
+        loading: false
       }
     default:
       return state;

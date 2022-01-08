@@ -1,36 +1,31 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 import InfoContext from '../../context/info/InfoContext'
+import Button from './Button';
 
 const Info = ({ info }) => {
   let navigate = useNavigate();
   const infoContext = useContext(InfoContext);
 
-  const { setCurrent, deleteInfo } = infoContext;
+  const { setCurrent } = infoContext;
 
-  const onEdit = () => {
+  const onMais = () => {
     setCurrent(info);
     navigate(`/pedidos/${info.id}`);
   }
 
-  const onDelete = () => {
-    deleteInfo(info.id);
-  }
-
   return (
-    <div>
-      <div key={info.id}>
+    <div className='my-1'>
+      <div className='card bg-dark' key={info.id}>
           <h3>{info.nome}</h3>
-          <p>{info.cpf}</p>
-          <p>{info.valor}</p>
-          <p>{info.parcelas}</p>
-          <p>{info.motivo}</p>
-          <p>{info.rg}</p>
-          <p>{info.emissao}</p>
-          <p>{info.orgEmissor}</p>
-          <p>{info.sexo}</p>
-          <button onClick={onEdit}>Editar</button>
-          <button onClick={onDelete}>Deletar</button>
+          <div className='py-1'>
+            <p className='text-bold'><span className='text-primary'>VALOR:</span> {info.valor}</p>
+            <p className='text-bold'><span className='text-primary'>PARCELAS:</span> {info.parcelas}</p>
+            <p className='text-bold'><span className='text-primary'>MOTIVO:</span> {info.motivo}</p>
+          </div>
+          <div className='text-center'>
+            <Button className={'btn'} onClick={onMais} value={'DETALHES'} />
+          </div>
         </div>
     </div>
   )
