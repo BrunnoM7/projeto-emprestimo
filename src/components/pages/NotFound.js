@@ -5,7 +5,7 @@ const NotFound = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => navigate('/'), 5000);
+    setTimeout(() => navigate('/'), 3500);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
