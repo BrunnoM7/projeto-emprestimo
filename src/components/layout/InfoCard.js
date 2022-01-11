@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import InfoContext from '../../context/info/InfoContext'
 import Button from './Button';
 
-const Info = ({ info }) => {
+const InfoCard = ({ info }) => {
   let navigate = useNavigate();
   const infoContext = useContext(InfoContext);
 
@@ -31,4 +31,4 @@ const Info = ({ info }) => {
   )
 }
 
-export default Info
+export default InfoCard

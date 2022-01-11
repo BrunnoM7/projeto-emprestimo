@@ -5,7 +5,7 @@ import InfoContext from '../../context/info/InfoContext'
 import StepContext from '../../context/step/StepContext'
 
 import Button from '../layout/Button'
-import Select from '../layout/Select';
+import Select from '../form/Select';
 
 const Form = props => {
   let navigate = useNavigate();
@@ -14,9 +14,9 @@ const Form = props => {
   const infoContext = useContext(InfoContext);
   const stepContext = useContext(StepContext);
 
-  const { current, setCurrent, clearCurrent, updateInfo, orgs } = infoContext;
+  const { current, setCurrent, updateInfo, orgs } = infoContext;
   const { step, nextStep, setStep } = stepContext;
-
+ 
   const [orgList, setOrgList] = useState([]);
   const [sex, setSex] = useState([]);
   const [info, setInfo] = useState({

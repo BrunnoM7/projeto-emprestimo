@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 
-import StatusBar from './StatusBar';
+import StatusBar from '../statusBar/StatusBar';
 
 const UiShell = props => {
   return (

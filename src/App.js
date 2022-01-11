@@ -26,8 +26,8 @@ function App() {
               <Route exact path="/review" element={<PrivateRoute routeSteps={[4]}><Review /></PrivateRoute>} />
               <Route exact path="/final" element={<PrivateRoute routeSteps={[5]}><Final /></PrivateRoute>} />
               <Route exact path="/pedidos" element={<Pedidos />} />
-              <Route exact path="/pedidos/:id" element={<Review />} />
-              <Route exact path="/pedidos/:id/edit" element={<Form />} />
+              <Route exact path="/pedidos/:id" element={<PrivateRoute><Review /></PrivateRoute>} />
+              <Route exact path="/pedidos/:id/edit" element={<PrivateRoute><Form /></PrivateRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </UiShell>

@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import InfoContext from '../../context/info/InfoContext'
 import Button from '../layout/Button';
-import Info from '../layout/Info';
+import InfoCard from '../layout/InfoCard';
 import Loading from '../layout/Loading';
 
 const Pedidos = () => {
@@ -28,7 +28,7 @@ const Pedidos = () => {
       <div className={` container ${infos? 'grid-3' : ''}`}>
       { !loading ? 
       infos.map(
-        info => (<Info key={info.id} info={info}/>)
+        info => (<InfoCard key={info.id} info={info}/>)
       )
       : <Loading />}
       </div>
